@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-500 text-center mb-8 animate-pulse">
+            OSIS & MPK Voting Results
+        </h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- OSIS Voting Results -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500 animate-pulse">
+                    OSIS Voting Results
+                </h2>
+                <canvas id="osisChart"></canvas>
+                <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                    <ul>
+                        <li class="text-pink-400">Ahmad & Chalista: 39.05% (280 Suara)</li>
+                        <li class="text-purple-400">Kirana & Caith: 38.59% (277 Suara)</li>
+                        <li class="text-blue-400">Syifa & Ichan: 9.40% (67 Suara)</li>
+                        <li class="text-green-400">Denting & Cessa: 12.96% (94 Suara)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MPK Voting Results -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-green-500 animate-pulse">
+                    MPK Voting Results
+                </h2>
+                <canvas id="mpkChart"></canvas>
+                <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                    <ul>
+                        <li class="text-teal-400">Azza & Azmi: 42.41% (305 Suara)</li>
+                        <li class="text-yellow-400">Aufa & Aulia: 20.81% (149 Suara)</li>
+                        <li class="text-indigo-400">Zachry & Gibran: 36.78% (264 Suara)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Votes -->
+        <div class="mt-8 text-center">
+            <h2 class="text-3xl font-semibold bg-gray-800 p-4 rounded-lg shadow-lg inline-block">
+                Total Keseluruhan Vote OSIS dan MPK: 
+                <span class="text-yellow-400">718 Suara</span>
+            </h2>
+        </div>
+    </div>
+
+    <script>
+        // OSIS Chart Data
+        const osisData = {
+            labels: ['Ahmad & Chalista', 'Kirana & Caith', 'Syifa & Ichan', 'Denting & Cessa'],
+            datasets: [{
+                label: 'Votes',
+                data: [280, 277, 67, 94],
+                backgroundColor: ['#f472b6', '#c084fc', '#60a5fa', '#34d399'],
+            }]
+        };
+
+        // MPK Chart Data
+        const mpkData = {
+            labels: ['Azza & Azmi', 'Aufa & Aulia', 'Zachry & Gibran'],
+            datasets: [{
+                label: 'Votes',
+                data: [305, 149, 264],
+                backgroundColor: ['#14b8a6', '#facc15', '#818cf8'],
+            }]
+        };
+
+        // Configurations
+        const config = {
+            type: 'bar',
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const votes = context.raw;
+                                const totalVotes = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((votes / totalVotes) * 100).toFixed(2);
+                                return ` ${votes} Suara (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Render OSIS Chart
+        new Chart(document.getElementById('osisChart'), {
+            ...config,
+            data: osisData
+        });
+
+        // Render MPK Chart
+        new Chart(document.getElementById('mpkChart'), {
+            ...config,
+            data: mpkData
+        });
+    </script>
+
+</body>
+</html>
